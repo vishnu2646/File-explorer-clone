@@ -131,7 +131,14 @@ $mobile-breakpoint: 600px;
             li {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 margin: 5px 0;
+                padding: 10px;
+
+                div {
+                    display: flex;
+                    align-items: center;
+                }
 
                 mat-icon {
                     margin-right: $file-icon-margin;

@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { MatButtonModule } from '@angular/material/button';
-import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+
 import { FileNode, FILE_STRUCTURE } from '../types/types';
-import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +17,8 @@ import { CommonModule } from '@angular/common';
         CommonModule,
         MatButtonModule,
         MatTreeModule, 
-        MatIconModule
+        MatIconModule,
+        MatMenuModule
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
@@ -31,6 +34,10 @@ export class AppComponent {
 
     public breadcrumbPath: FileNode[] = [];
 
+    @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger; // Updated reference
+
+    public selectedFileOrFolder: FileNode | null = null;
+
     constructor(private cd: ChangeDetectorRef) {
         this.dataSource.data = FILE_STRUCTURE;
     }
@@ -38,6 +45,7 @@ export class AppComponent {
     public hasChild = (_: number, node: FileNode) => !!node.children && node.children.length > 0;
 
     public selectFolder(folder: FileNode): void {
+        console.log("selectFolder from menuTrigger", folder);
         if(folder === null) {
             return;
         }
@@ -82,6 +90,16 @@ export class AppComponent {
             }
         });
         return files;
+    }
+
+    openContextMenu(event: MouseEvent, file: FileNode) {
+        event.preventDefault(); 
+        this.menuTrigger.openMenu();
+    }
+
+    public openFolder(folder: FileNode) {
+        console.log('open folder', folder);
+        // this.selectedFolder = folder
     }
 
     public navigateTo(folder: FileNode): void {

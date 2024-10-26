@@ -50,10 +50,24 @@
     <!-- Right panel for selected folder content -->
     <div class="files-panel" *ngIf="selectedFolder">
         <ul>
-            <li *ngFor="let file of displayedFilesAndFolders" (click)="file.type === 'folder' ? selectFolder(file) : null">
-                <mat-icon [className]="file.type === 'folder' ? 'folder' : 'file'">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon> {{ file.name }}
+            <li 
+                *ngFor="let file of displayedFilesAndFolders" 
+            >
+                <div (click)="file.type === 'folder' ? selectFolder(file) : null" >
+                    <mat-icon [className]="file.type === 'folder' ? 'folder' : 'file'">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon> {{ file.name }}
+                </div>
+                <mat-icon
+                    (click)="openContextMenu($event, file)"
+                    [matMenuTriggerFor]="contextMenu"
+                    #menuTrigger="matMenuTrigger"
+                >more_vert</mat-icon>
             </li>
         </ul>
+        <mat-menu #contextMenu="matMenu">
+            <button mat-menu-item>Open</button>
+            <button mat-menu-item>Rename</button>
+            <button mat-menu-item>Delete</button>
+        </mat-menu>
     </div>
 </div>
   
