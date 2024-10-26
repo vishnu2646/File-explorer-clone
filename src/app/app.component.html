@@ -1,32 +1,3 @@
-<nav class="folder-navigated-path">
-    <div class="actions">
-        <div class="back">
-            <mat-icon>keyboard_backspace</mat-icon>
-        </div>
-        <div class="forward-icon">
-            <mat-icon class="forward">keyboard_backspace</mat-icon>
-        </div>
-        <div class="up-icon" [ngClass]="{'disabled': breadcrumbPath.length === 0}">
-            <mat-icon class="up" >keyboard_backspace</mat-icon>
-        </div>
-        <div class="refresh-icon" (click)="handleDetectChanges()">
-            <mat-icon class="refresh">refresh</mat-icon>
-        </div>
-    </div>
-    <div class="paths">
-        <div class="paths-content">
-            <div>
-                <mat-icon>laptop_windows</mat-icon> <span *ngIf="breadcrumbPath.length > 0"> > </span>
-            </div>
-            <ul class="folder_names">
-                <li *ngFor="let path of breadcrumbPath; let i = index;">
-                    <span (click)="selectFolder(path)">{{ path.name }}</span>
-                    <span class="folder_arrow" *ngIf="i < breadcrumbPath.length - 1"> > </span>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 <div class="file-explorer-container">
     <!-- Left panel for folder structure -->
     <div class="folder-panel">

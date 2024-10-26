@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
@@ -29,9 +29,7 @@ export class AppComponent {
 
     public displayedFilesAndFolders: FileNode[] = [];
 
-    public breadcrumbPath: FileNode[] = [];
-
-    constructor(private cd: ChangeDetectorRef) {
+    constructor() {
         this.dataSource.data = FILE_STRUCTURE;
     }
 
@@ -55,7 +53,6 @@ export class AppComponent {
             // Set the selected folder and expand it
             this.selectedFolder = folder;
             this.displayedFilesAndFolders = folder.children || [];
-            this.breadcrumbPath.push(folder);
             // this.treeControl.expand(folder);
             this.expandFolderAndChildren(folder);
         }
@@ -86,9 +83,5 @@ export class AppComponent {
 
     public navigateTo(folder: FileNode): void {
         this.selectFolder(folder);
-    }
-
-    public async handleDetectChanges() {
-        await this.cd.detectChanges();
     }
 }
