@@ -1,27 +1,36 @@
-# DocumentViewer
+# File Explorer clone like windows
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
+A cloud based files and folders storager. This application functions like a file explorer in the windows to preview the files and visit the stored files under a folder as shown in the below image. This application also supports the `Light` and `Dark` Mode themes. 
 
-## Development server
+### Light mode
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![image](https://github.com/user-attachments/assets/1e0c53b0-eae1-4177-a673-5ece8dfe9ceb)
 
-## Code scaffolding
+### Dark mode
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![image](https://github.com/user-attachments/assets/fc1a9c2d-3664-4348-8e0b-225ec8e7aa5c)
 
-## Build
+### Support Funtions
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Visit folders
+- Rename folders or files
+- Delete folders or files
+- Shows the Paths till the user visits the file or folder
 
-## Running unit tests
+### Yet to support
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Search Files or folders
+- support functions for back and forward icons under action section
+- Create / Add folder or files.
 
-## Running end-to-end tests
+### Tech Stacks Used
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Angular 17
+- Angular Material 17
+- Stack
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Note:
+- There is not suuport the backend.
+- Planned to publish like a `NPM Package`.
+- Open to create a `pull request` for the updation or adding the funtionalities.
+- Open for the UI Updating suggestions. (DM me if any UI updation design suggestions with design templates priyanvishnu15@gmail.com)
