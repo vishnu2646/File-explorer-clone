@@ -6,7 +6,7 @@
         <div class="forward-icon">
             <mat-icon class="forward">keyboard_backspace</mat-icon>
         </div>
-        <div class="up-icon" [ngClass]="{'disabled': breadcrumbPath.length === 0}">
+        <div class="up-icon" [ngClass]="{'disabled': breadcrumbPath.length === 0 || displayedFilesAndFolders.length === 0}">
             <mat-icon class="up" >keyboard_backspace</mat-icon>
         </div>
         <div class="refresh-icon" (click)="handleDetectChanges()">
@@ -26,13 +26,17 @@
             </ul>
         </div>
     </div>
+    <div class="search">
+        <input type="text" placeholder="Search Files or Folders" class="search-input">
+        <mat-icon>search</mat-icon>
+    </div>
 </nav>
 <div class="file-explorer-container">
     <!-- Left panel for folder structure -->
     <div class="folder-panel">
         <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
             <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodeToggle (click)="selectFolder(node)">
-                <button mat-icon-button matTreeNodeToggle class="folder_icon" color="accent" (click)="selectFolder(node)">
+                <button mat-icon-button matTreeNodeToggle class="folder_icon" color="warn" (click)="selectFolder(node)">
                     <mat-icon>{{ treeControl.isExpanded(node) ? 'folder_open' : 'folder' }}</mat-icon>
                 </button>
                 <span>{{ node.name }}</span>
@@ -48,26 +52,38 @@
     </div>
   
     <!-- Right panel for selected folder content -->
-    <div class="files-panel" *ngIf="selectedFolder">
-        <ul>
-            <li 
-                *ngFor="let file of displayedFilesAndFolders" 
-            >
-                <div (click)="file.type === 'folder' ? selectFolder(file) : null" >
-                    <mat-icon [className]="file.type === 'folder' ? 'folder' : 'file'">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon> {{ file.name }}
-                </div>
-                <mat-icon
-                    (click)="openContextMenu($event, file)"
-                    [matMenuTriggerFor]="contextMenu"
-                    #menuTrigger="matMenuTrigger"
-                >more_vert</mat-icon>
-            </li>
-        </ul>
-        <mat-menu #contextMenu="matMenu">
-            <button mat-menu-item>Open</button>
-            <button mat-menu-item>Rename</button>
-            <button mat-menu-item>Delete</button>
-        </mat-menu>
-    </div>
+    @if(displayedFilesAndFolders.length > 0) {
+        <div class="files-panel" *ngIf="selectedFolder">
+            <ul>
+                <li 
+                    *ngFor="let file of displayedFilesAndFolders" 
+                >
+                    <div>
+                        <mat-icon color="warn" [className]="file.type === 'folder' ? 'folder' : 'file'" (click)="file.type === 'folder' ? selectFolder(file) : null">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon> 
+                        <ng-container *ngIf="isEditFileOrFolderName && selectedFileOrFolder?.name === file.name else editTemplate;">
+                            <input type="text" [(ngModel)]="file.name" (blur)="isEditFileOrFolderName = !isEditFileOrFolderName">
+                        </ng-container>
+                        <ng-template #editTemplate> 
+                            {{ file.name }}
+                        </ng-template>
+                    </div>
+                    <mat-icon
+                        (click)="openContextMenu($event, file)"
+                        [matMenuTriggerFor]="contextMenu"
+                        #menuTrigger="matMenuTrigger"
+                    >more_vert</mat-icon>
+                </li>
+            </ul>
+            <mat-menu #contextMenu="matMenu">
+                <button mat-menu-item (click)="selectFolder(selectedFileOrFolder)">Open</button>
+                <button mat-menu-item (click)="reameFolderOrFile(selectedFileOrFolder)">Rename</button>
+                <button mat-menu-item>Delete</button>
+            </mat-menu>
+        </div>
+    } @else {
+        <div class="no-folders-list">
+            <p>No Selected Folders or Files to display</p>
+        </div>
+    }
 </div>
   

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 
 import { FileNode, FILE_STRUCTURE } from '../types/types';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-root',
@@ -15,6 +16,7 @@ import { FileNode, FILE_STRUCTURE } from '../types/types';
     imports: [
         RouterOutlet,
         CommonModule,
+        FormsModule,
         MatButtonModule,
         MatTreeModule, 
         MatIconModule,
@@ -34,9 +36,12 @@ export class AppComponent {
 
     public breadcrumbPath: FileNode[] = [];
 
-    @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger; // Updated reference
-
     public selectedFileOrFolder: FileNode | null = null;
+
+    public isEditFileOrFolderName: boolean = false;
+
+    @ViewChild('menuTrigger') 
+    public menuTrigger!: MatMenuTrigger; // Updated reference
 
     constructor(private cd: ChangeDetectorRef) {
         this.dataSource.data = FILE_STRUCTURE;
@@ -44,8 +49,7 @@ export class AppComponent {
 
     public hasChild = (_: number, node: FileNode) => !!node.children && node.children.length > 0;
 
-    public selectFolder(folder: FileNode): void {
-        console.log("selectFolder from menuTrigger", folder);
+    public selectFolder(folder: FileNode | null): void {
         if(folder === null) {
             return;
         }
@@ -63,7 +67,7 @@ export class AppComponent {
             // Set the selected folder and expand it
             this.selectedFolder = folder;
             this.displayedFilesAndFolders = folder.children || [];
-            this.breadcrumbPath.push(folder);
+            this.breadcrumbPath = this.getBreadcrumbPath(folder);
             // this.treeControl.expand(folder);
             this.expandFolderAndChildren(folder);
         }
@@ -92,21 +96,56 @@ export class AppComponent {
         return files;
     }
 
-    openContextMenu(event: MouseEvent, file: FileNode) {
-        event.preventDefault(); 
+    public openContextMenu(event: MouseEvent, file: FileNode) {
+        event.preventDefault();
+        this.selectedFileOrFolder = file;
         this.menuTrigger.openMenu();
-    }
-
-    public openFolder(folder: FileNode) {
-        console.log('open folder', folder);
-        // this.selectedFolder = folder
-    }
-
-    public navigateTo(folder: FileNode): void {
-        this.selectFolder(folder);
     }
 
     public async handleDetectChanges() {
         await this.cd.detectChanges();
+    }
+
+    public reameFolderOrFile(node: FileNode  | null) {
+        if(!node) {
+            return;
+        };
+        this.isEditFileOrFolderName = !this.isEditFileOrFolderName;
+        this.selectedFileOrFolder = node;
+        console.log('reameFolderOrFile', this.selectedFileOrFolder);
+    }
+
+    private  getBreadcrumbPath(folder: FileNode): FileNode[] {
+        const path: FileNode[] = [];
+        let current: FileNode | null = folder;
+
+        while (current) {
+            path.unshift(current);
+            current = this.findParent(current, this.dataSource.data);
+        }
+        return path;
+    }
+
+    private findParent(node: FileNode, nodes: FileNode[]): FileNode  | null{
+        const stack: { currentNode: FileNode; parent: FileNode | null }[] = nodes.map(n => ({ currentNode: n, parent: null }));
+
+        while (stack.length) {
+            const { currentNode, parent } = stack.pop()!;
+
+            // If the node's children contain the target node, we found the parent
+            if (currentNode.children && currentNode.children.includes(node)) {
+                return currentNode;
+            }
+
+            // If there are children, push them onto the stack with the current node as their parent
+            if (currentNode.children) {
+                currentNode.children.forEach(child =>
+                    stack.push({ currentNode: child, parent: currentNode })
+                );
+            }
+        }
+
+        // Return null if no parent is found
+        return null
     }
 }
