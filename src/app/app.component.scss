@@ -110,7 +110,7 @@ $mobile-breakpoint: 600px;
         .search-input {
             border: 0;
             outline: none;
-            background-color: var(--gray);
+            background-color: transparent;
             padding-left: 5px;
         }
 
@@ -135,7 +135,6 @@ $mobile-breakpoint: 600px;
             background: none;
 
             mat-tree-node {
-                color: black;
 
                 button, span {
                     cursor: context-menu;
@@ -166,7 +165,7 @@ $mobile-breakpoint: 600px;
 
                 mat-icon {
                     margin-right: $file-icon-margin;
-                    color: var(--danger);
+                    // color: var(--danger);
                 }
             }
         }
@@ -206,3 +205,20 @@ $mobile-breakpoint: 600px;
     }
 }
 
+mat-icon {
+    &.primary {
+        color: var(--primary);
+    }
+
+    &.secondary {
+        color: var(--accent);
+    }
+
+    &.error {
+        color: var(--error);
+    }
+
+    &.surface {
+        color: var(--surface);
+    }
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NestedTreeControl } from '@angular/cdk/tree';
@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     public treeControl = new NestedTreeControl<FileNode>((node) => node.children);
 
     public dataSource = new MatTreeNestedDataSource<FileNode>();
@@ -40,11 +40,24 @@ export class AppComponent {
 
     public isEditFileOrFolderName: boolean = false;
 
+    public themeMode: String = 'light';
+
     @ViewChild('menuTrigger') 
     public menuTrigger!: MatMenuTrigger; // Updated reference
 
     constructor(private cd: ChangeDetectorRef) {
         this.dataSource.data = FILE_STRUCTURE;
+    }
+
+    public ngOnInit(): void {
+        const theme = localStorage.getItem('mode');
+
+        if(theme) {
+            this.themeMode = theme;
+            this.handleSetTheme(theme);
+        } else {
+            this.themeMode = 'light';
+        }
     }
 
     public hasChild = (_: number, node: FileNode) => !!node.children && node.children.length > 0;
@@ -106,6 +119,21 @@ export class AppComponent {
         await this.cd.detectChanges();
     }
 
+    public handleSetTheme(theme: string) {
+        localStorage.setItem('mode', theme);
+        this.themeMode = theme;
+
+        const bodyTheme = document.body.classList;
+
+        if(bodyTheme.contains('light')) {
+            document.body.classList.remove('light');
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+            document.body.classList.add('light');
+        }
+    }
+
     public reameFolderOrFile(node: FileNode  | null) {
         if(!node) {
             return;
@@ -113,6 +141,14 @@ export class AppComponent {
         this.isEditFileOrFolderName = !this.isEditFileOrFolderName;
         this.selectedFileOrFolder = node;
         console.log('reameFolderOrFile', this.selectedFileOrFolder);
+    }
+
+    public deleteFileOrFolder(node: FileNode | null) {
+        if(!node) {
+            return;
+        }
+
+        this.displayedFilesAndFolders = this.displayedFilesAndFolders.filter(dnode => dnode.name !== node.name);
     }
 
     private  getBreadcrumbPath(folder: FileNode): FileNode[] {

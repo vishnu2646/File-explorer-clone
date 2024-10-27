@@ -1,52 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
 
-// // Custom Theming for Angular Material
-// // For more information: https://material.angular.io/guide/theming
-// @use '@angular/material' as mat;
-// // Plus imports for other components in your app.
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
 
-// // Include the common styles for Angular Material. We include this here so that you only
-// // have to load a single css file for Angular Material in your app.
-// // Be sure that you only ever include this mixin once!
-// @include mat.core();
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
 
-// :root {
-//     --header-bg: #ff4081;
-//     --danger: #f44336;
-// }
 
-// // Define the palettes for your theme using the Material Design palettes available in palette.scss
-// // (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// // hue. Available color palettes: https://material.io/design/color/
-// $subcontractorJC-light-primary: mat.define-palette(mat.$indigo-palette);
-// $subcontractorJC-light-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$subcontractorJC-light-primary: mat.define-palette(mat.$indigo-palette);
+$subcontractorJC-light-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
 
-// // The warn palette is optional (defaults to red).
-// $subcontractorJC-light-warn: mat.define-palette(mat.$red-palette);
+// The warn palette is optional (defaults to red).
+$subcontractorJC-light-warn: mat.define-palette(mat.$red-palette);
 
-// // Create the theme object. A theme consists of configurations for individual
-// // theming systems such as "color" or "typography".
-// $subcontractorJC-light-theme: mat.define-light-theme((
-//     color: (
-//         primary: $subcontractorJC-light-primary,
-//         accent: $subcontractorJC-light-accent,
-//         warn: $subcontractorJC-light-warn,
-//     ),
-//     typography: mat.define-typography-config(),
-//     density: 0
-// ));
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$subcontractorJC-light-theme: mat.define-light-theme((
+    color: (
+        primary: $subcontractorJC-light-primary,
+        accent: $subcontractorJC-light-accent,
+        warn: $subcontractorJC-light-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0
+));
 
-// // Include theme styles for core and each component used in your app.
-// // Alternatively, you can import and @include the theme mixins for each component
-// // that you are using.
+// dark mode
+
+$app-dark-primary: mat.define-palette($subcontractorJC-light-primary);
+$app-dark-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$app-dark-warning: mat.define-palette(mat.$red-palette);
+
+$app-dark-theme: mat.define-dark-theme((
+    color: (
+        primary: $app-dark-primary,
+        accent: $app-dark-accent,
+        warn: $app-dark-warning,
+    )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
 // @include mat.all-component-themes($subcontractorJC-light-theme);
 
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-    --accent: #69f0ae;
+    --primary: #3f51b5;
+    --accent: #ffd740;
+    --warning: $app-dark-warning;
     --gray: #e6e6e6d4;
-    --danger: #f44336;   
+    --danger: #f44336;
+    --light-bg: #fafafa;
+    --black: #131214;  
 }
 
 html, body { 
@@ -59,4 +73,16 @@ body {
     box-sizing: border-box;
     font-family: Roboto, "Helvetica Neue", sans-serif; 
     cursor: context-menu;
+
+    &.light {
+        background-color: var(--light-bg);
+        color: var(--black);
+        @include mat.all-component-themes($subcontractorJC-light-theme);
+    }
+
+    &.dark {
+        background-color: var(--black);
+        color: var(--light-bg);
+        @include mat.all-component-themes($app-dark-theme);
+    }
 }
