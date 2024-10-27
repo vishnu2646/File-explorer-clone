@@ -22,6 +22,7 @@ A cloud based files and folders storager. This application functions like a file
 - Search Files or folders
 - support functions for back and forward icons under action section
 - Create / Add folder or files.
+- To support in ReactJs / NextJs  
 
 ### Tech Stacks Used
 
