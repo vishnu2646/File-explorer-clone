@@ -1,76 +1,128 @@
-$file-icon-margin: 8px;
-$folder-panel-width: 200px;
-$panel-padding: 10px;
-$border-color: #ccc;
-$mobile-breakpoint: 600px;
+$file-pane-width: 200px;
+$font-size-default: 14px;
+$font-size-small: 12px;
+$border-color: #ddd;
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+
+    .title {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        height: 60px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    button.nav_icon {
+        height: 40px;
+        width: 40px;
+
+        mat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
 
 .file-explorer-container {
     display: flex;
     height: 100%;
+    border-top: 1px solid $border-color;
 
-    .folder-panel {
-        width: $folder-panel-width;
-        padding: $panel-padding;
+    .folder-pane {
+        width: 0px;
+        padding: 0px;
         border-right: 1px solid $border-color;
+        overflow-y: auto;
+
+        &.open {
+            width: $file-pane-width;
+            padding: 10px;
+        }
 
         mat-tree {
             background: none;
 
-            mat-tree-node {
-                color: black;
+            mat-nested-tree-node {
+                color: var(--black);
+                padding: 5px;
 
-                button, span {
-                    cursor: context-menu;
-                }
-            }
-        }
-    }
+                div {
+                    display: flex;
+                    align-items: center;
+                    height: inherit;
 
-    .files-panel {
-        flex: 1;
-        padding: $panel-padding;
-
-        ul {
-            list-style: none;
-            padding: 0;
-
-            li {
-                display: flex;
-                align-items: center;
-                margin: 5px 0;
-
-                mat-icon {
-                    margin-right: $file-icon-margin;
-                    color: var(--accent);
-                }
-            }
-        }
-    }
-
-    @media (max-width: $mobile-breakpoint) {
-        flex-direction: column;
-    
-        .folder-panel {
-            width: 100%;
-            padding: 5px;
-            border-right: none;
-            border-bottom: 1px solid $border-color;
-        }
-    
-        .files-panel {
-            width: 100%;
-            padding: 5px;
-    
-            ul {
-                li {
-                    font-size: 0.9em;
-
-                    mat-icon {
-                        margin-right: 5px;
+                    .folder_name {
+                        margin-left: 10px;
                     }
                 }
             }
         }
     }
-}
 
+    .file-pane {
+        flex: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - $file-pane-width);
+    
+        .breadcrumb {
+            margin-bottom: 10px;
+            font-size: $font-size-default;
+            color: #666;
+    
+            span {
+                &:last-child {
+                    display: inline;
+                }
+            }
+        }
+
+        mat-card {
+            width: 100%;
+
+            mat-card-content {
+                overflow: auto;
+                width: 100%;
+                padding: 0px;
+
+                .dynamic-table {
+                    width: 100%;
+            
+                    // Responsive font size adjustment
+                    @media (max-width: 768px) {
+                        font-size: $font-size-small;
+                    }
+            
+                    th {
+                        font-weight: bold;
+                        text-align: left;
+                    }
+            
+                    td {
+                        padding: 8px;
+                        text-align: left;
+                    }
+                }
+            }
+
+        }
+    
+    }
+
+    .no-file-pane {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+}
