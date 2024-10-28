@@ -58,31 +58,49 @@ $app-dark-theme: mat.define-dark-theme((
     --accent: #ffd740;
     --warning: $app-dark-warning;
     --gray: #e6e6e6d4;
+    --gray-secondary: #e8e5e5;
     --danger: #f44336;
     --light-bg: #fafafa;
-    --black: #131214;  
+    --black: #131214;
+    --black-secondary: #222123;
 }
 
-html, body { 
-    height: 100%; 
+html, body {
+    height: 100%;
 }
 
-body { 
-    margin: 0; 
+body {
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     cursor: context-menu;
 
     &.light {
         background-color: var(--light-bg);
         color: var(--black);
         @include mat.all-component-themes($subcontractorJC-light-theme);
+
+        .paths, .search, .grid:hover {
+            background-color: var(--gray-secondary);
+        }
+
+        .grid:hover {
+          border-radius: 5px;
+        }
     }
 
     &.dark {
         background-color: var(--black);
         color: var(--light-bg);
         @include mat.all-component-themes($app-dark-theme);
+
+        .paths, .search, .grid:hover {
+            background-color: var(--black-secondary);
+        }
+
+        .grid:hover {
+          border-radius: 5px;
+        }
     }
 }

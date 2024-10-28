@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         FormsModule,
         MatButtonModule,
-        MatTreeModule, 
+        MatTreeModule,
         MatIconModule,
         MatMenuModule
     ],
@@ -42,7 +42,9 @@ export class AppComponent implements OnInit {
 
     public themeMode: String = 'light';
 
-    @ViewChild('menuTrigger') 
+    public mode: String = 'list';
+
+    @ViewChild('menuTrigger')
     public menuTrigger!: MatMenuTrigger; // Updated reference
 
     constructor(private cd: ChangeDetectorRef) {
@@ -51,10 +53,13 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
         const theme = localStorage.getItem('mode');
+        const mode = localStorage.getItem('type');
 
-        if(theme) {
+        if(theme && mode) {
             this.themeMode = theme;
-            this.handleSetTheme(theme);
+
+            this.mode = mode;
+            this.handleFolderViewMode(mode);
         } else {
             this.themeMode = 'light';
         }
@@ -183,5 +188,21 @@ export class AppComponent implements OnInit {
 
         // Return null if no parent is found
         return null
+    }
+
+    public handleFolderViewMode(mode: string): void {
+        console.log("handleFolderViewMode", mode);
+        localStorage.setItem('type', mode);
+        this.mode = mode;
+
+        // const bodyTheme = document.body.classList;
+
+        // if(bodyTheme.contains('light')) {
+        //     document.body.classList.remove('light');
+        //     document.body.classList.add('dark');
+        // } else {
+        //     document.body.classList.remove('dark');
+        //     document.body.classList.add('light');
+        // }
     }
 }

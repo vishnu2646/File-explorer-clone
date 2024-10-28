@@ -19,6 +19,13 @@
                 <mat-icon (click)="handleSetTheme('light')">dark_mode</mat-icon>
             }
         </div>
+        <div class="mode">
+            @if(this.mode === 'list') {
+                <mat-icon (click)="handleFolderViewMode('grid')">list</mat-icon>
+            } @else {
+                <mat-icon (click)="handleFolderViewMode('list')">grid_view</mat-icon>
+            }
+        </div>
     </div>
     <div class="paths">
         <div class="paths-content">
@@ -48,7 +55,7 @@
                 </button>
                 <span>{{ node.name }}</span>
             </mat-tree-node>
-    
+
             <!-- File node template -->
             <mat-tree-node *matTreeNodeDef="let node">
                 <button mat-icon-button disabled></button>
@@ -57,29 +64,51 @@
             </mat-tree-node>
         </mat-tree>
     </div>
-  
+
     <!-- Right panel for selected folder content -->
     @if(displayedFilesAndFolders.length > 0) {
         <div class="files-panel" *ngIf="selectedFolder">
-            <ul>
-                <li 
-                    *ngFor="let file of displayedFilesAndFolders" 
-                >
-                    <div>
-                        <mat-icon class="secondary" [ngClass]="{'folder': file.type === 'folder', 'file': file.type === 'file'}" (click)="file.type === 'folder' ? selectFolder(file) : null">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon> 
-                        <ng-container *ngIf="isEditFileOrFolderName && selectedFileOrFolder?.name === file.name else editTemplate;">
-                            <input type="text" [(ngModel)]="file.name" (blur)="isEditFileOrFolderName = !isEditFileOrFolderName">
-                        </ng-container>
-                        <ng-template #editTemplate> 
-                            {{ file.name }}
-                        </ng-template>
-                    </div>
-                    <mat-icon
-                        (click)="openContextMenu($event, file)"
-                        [matMenuTriggerFor]="contextMenu"
-                        #menuTrigger="matMenuTrigger"
-                    >more_vert</mat-icon>
-                </li>
+            <ul [ngClass]="{'grid-content': mode === 'grid'}">
+                <ng-container *ngIf="mode === 'list' else gridTemplate">
+                  <li
+                      *ngFor="let file of displayedFilesAndFolders"
+                  >
+                      <div class="list">
+                          <mat-icon class="secondary" [ngClass]="{'folder': file.type === 'folder', 'file': file.type === 'file'}" (click)="file.type === 'folder' ? selectFolder(file) : null">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon>
+                          <ng-container *ngIf="isEditFileOrFolderName && selectedFileOrFolder?.name === file.name else editTemplate;">
+                              <input type="text" [(ngModel)]="file.name" (blur)="isEditFileOrFolderName = !isEditFileOrFolderName">
+                          </ng-container>
+                          <ng-template #editTemplate>
+                              {{ file.name }}
+                          </ng-template>
+                      </div>
+                      <mat-icon
+                          (click)="openContextMenu($event, file)"
+                          [matMenuTriggerFor]="contextMenu"
+                          #menuTrigger="matMenuTrigger"
+                      >more_vert</mat-icon>
+                  </li>
+                </ng-container>
+                <ng-template #gridTemplate>
+                    <li
+                      *ngFor="let file of displayedFilesAndFolders"
+                  >
+                      <div class="grid">
+                          <mat-icon class="secondary" [ngClass]="{'folder': file.type === 'folder', 'file': file.type === 'file'}" (click)="file.type === 'folder' ? selectFolder(file) : null">{{ file.type === 'folder' ? 'folder' : 'insert_drive_file' }}</mat-icon>
+                          <ng-container *ngIf="isEditFileOrFolderName && selectedFileOrFolder?.name === file.name else editTemplate;">
+                              <input type="text" [(ngModel)]="file.name" (blur)="isEditFileOrFolderName = !isEditFileOrFolderName">
+                          </ng-container>
+                          <ng-template #editTemplate>
+                              {{ file.name }}
+                          </ng-template>
+                      </div>
+                      <!-- <mat-icon
+                          (click)="openContextMenu($event, file)"
+                          [matMenuTriggerFor]="contextMenu"
+                          #menuTrigger="matMenuTrigger"
+                      >more_vert</mat-icon> -->
+                  </li>
+                </ng-template>
             </ul>
             <mat-menu #contextMenu="matMenu">
                 <button mat-menu-item (click)="selectFolder(selectedFileOrFolder)">Open</button>
@@ -93,4 +122,3 @@
         </div>
     }
 </div>
-  

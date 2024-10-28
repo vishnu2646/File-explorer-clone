@@ -38,11 +38,11 @@ $mobile-breakpoint: 600px;
                 font-size: 18px;
                 display: flex;
                 align-items: center;
-    
+
                 &.forward {
                     rotate: 180deg;
                 }
-    
+
                 &.up {
                     rotate: 90deg;
                 }
@@ -52,7 +52,6 @@ $mobile-breakpoint: 600px;
 
     .paths {
         height: 30px;
-        background-color: var(--gray);
         display: flex;
         align-items: center;
         border-radius: 5px;
@@ -87,12 +86,12 @@ $mobile-breakpoint: 600px;
                 list-style: none;
                 padding: 0px;
                 padding-left: 20px;
-                    
+
                 span.folder_arrow {
                     margin-left: 10px;
                     font-size: 16px;
                 }
-    
+
             }
         }
     }
@@ -101,7 +100,6 @@ $mobile-breakpoint: 600px;
         display: flex;
         align-items: center;
         flex: 2;
-        background-color: var(--gray);
         border-radius: 5px;
         height: 30px;
         padding: 0 10px;
@@ -151,6 +149,12 @@ $mobile-breakpoint: 600px;
             list-style: none;
             padding: 0;
 
+            &.grid-content {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
             li {
                 display: flex;
                 align-items: center;
@@ -159,13 +163,30 @@ $mobile-breakpoint: 600px;
                 padding: 10px;
 
                 div {
-                    display: flex;
-                    align-items: center;
-                }
+                    &.list {
+                      display: flex;
+                      align-items: center;
 
-                mat-icon {
-                    margin-right: $file-icon-margin;
-                    // color: var(--danger);
+                        mat-icon {
+                            margin-right: $file-icon-margin;
+                        }
+                    }
+
+                    &.grid {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        width: 60px;
+                        height: 70px;
+
+                        mat-icon {
+                            font-size: 50px;
+                            height: 55px;
+                            width: 55px;
+                        }
+                    }
                 }
             }
         }
@@ -173,18 +194,18 @@ $mobile-breakpoint: 600px;
 
     @media (max-width: $mobile-breakpoint) {
         flex-direction: column;
-    
+
         .folder-panel {
             width: 100%;
             padding: 5px;
             border-right: none;
             border-bottom: 1px solid $border-color;
         }
-    
+
         .files-panel {
             width: 100%;
             padding: 5px;
-    
+
             ul {
                 li {
                     font-size: 0.9em;
